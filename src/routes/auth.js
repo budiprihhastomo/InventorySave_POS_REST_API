@@ -5,7 +5,7 @@ const route = express.Router()
 const usersController = require('../controllers/users')
 
 route
-    .post('/register', usersController.registerUser)
-    .post('/login', usersController.loginUser)
+  .post('/register', usersController.registerUser)
+  .post('/login', usersController.loginUser)
 
 module.exports = route

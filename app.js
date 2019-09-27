@@ -13,22 +13,22 @@ const fileUpload = require('express-fileupload')
 
 // Use express
 const app = express()
-// Set Port 
+// Set Port
 const port = process.env.PORT_SERVER || 3000
 
 // Use Middleware : body-parser
-app.use(bodyParser.json({limit: '50mb'}))
-app.use(bodyParser.urlencoded({extended:true, limit: '50mb'}))
+app.use(bodyParser.json({ limit: '50mb' }))
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
 // Use Middleware : CORS
 app.use(cors())
 // Use Middleware : morgan
 app.use(morgan('dev'))
 // Use Middleware : express-fileupload
 app.use(fileUpload({
-    createParentPath: true
+  createParentPath: true
 }))
 
-// Use route navigation 
+// Use route navigation
 const routeNav = require('./src/index')
 app.use('/api/v1/', routeNav)
 

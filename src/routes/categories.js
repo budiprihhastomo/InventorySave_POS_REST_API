@@ -5,10 +5,10 @@ const route = express.Router()
 const categoriesController = require('../controllers/categories')
 
 route
-    .get('/', categoriesController.fetchAllData)
-    .get('/:id', categoriesController.fetchSelectedData)
-    .post('/', categoriesController.insertData)
-    .patch('/:id', categoriesController.updateData)
-    .delete('/:id', categoriesController.deleteData)
+  .get('/', categoriesController.fetchAllData)
+  .get('/:id', categoriesController.fetchSelectedData)
+  .post('/', categoriesController.insertData)
+  .patch('/:id', categoriesController.updateData)
+  .delete('/:id', categoriesController.deleteData)
 
 module.exports = route

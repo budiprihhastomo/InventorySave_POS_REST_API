@@ -6,13 +6,12 @@ const config = require('./config')
 const util = require('util')
 
 // Create variable con
-let con = mysql.createPool(config.database.mysql)
+const con = mysql.createPool(config.database.mysql)
 
 // Connect to database
 con.getConnection((err, conn) => {
-    if(err) throw err
-    if(conn) conn.release()
-    return
+  if (err) throw err
+  if (conn) conn.release()
 })
 
 con.query = util.promisify(con.query)
