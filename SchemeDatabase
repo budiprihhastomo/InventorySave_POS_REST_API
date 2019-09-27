@@ -1,0 +1,14 @@
+Table Products
+- product_id
+- product_name
+- product_description
+- product_image
+- product_category
+- product_price
+- product_qty
+- created_at
+- updated_at
+
+Table Category
+- category_id
+- category_name
