@@ -27,7 +27,7 @@
     "morgan": "^1.9.1",
     "mysql": "^2.17.1",
     "path": "^0.12.7",
-    "utils": "^0.3.1",
+    "util": "^0.12.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
