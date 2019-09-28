@@ -16,7 +16,6 @@ Inventory Save POS is an API service created using Node.JS and Express. This ser
   - Node.js - Download and Install Node.js - Simple bash script to manage multiple active node.js versions.
   - Nodemon - Download and Install Nodemon - nodemon is a tool that automatically restarting the node application when file changes in the directory are detected.
 
-Markdown is a lightweight markup language based on the formatting conventions that people naturally use in email.  As [John Gruber] writes on the [Markdown site][df1]
 ### Configuration
 > - Basic Configuration
 > - Structured
