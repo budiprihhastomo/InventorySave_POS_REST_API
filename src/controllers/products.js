@@ -42,7 +42,6 @@ module.exports = {
       const data = { product_name, product_description, product_category, product_price, product_qty, product_image: upload.name, created_at: new Date() }
 
       const isExist = await isExistData({ product_name })
-      console.log(isExist)
       if (isExist.length > 0) return res.status(400).json({ status: 400, message: 'data already exist in database' })
 
       const resultQuery = await productsModel.insertData(data)
@@ -130,12 +129,13 @@ module.exports = {
     const limit = parseInt(req.query.limit, 10) || 5
     const offset = (page - 1) * limit
     const data = { offset: offset, limit: limit }
-
+    const getData = await productsModel.fetchAllData()
     const resultQuery = await productsModel.filterProducts(req.query.s, req.query.field, req.query.sort, data)
     if (resultQuery.length > 0) {
       const countPage = Math.ceil(resultQuery.length / limit)
       const results = {
         totalPage: countPage,
+        totalData: getData.length,
         offsetData: offset,
         limitData: limit,
         page: page,
