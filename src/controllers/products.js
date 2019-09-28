@@ -107,6 +107,10 @@ module.exports = {
     if (isExist.length > 0) {
       const resultQuery = await productsModel.deleteData({ product_id: req.params.id })
       if (resultQuery.affectedRows > 0) {
+        // Remove old image after update
+        fs.unlink(path.join(__dirname) + `/../../public/${isExist[0].product_image}`, (err) => {
+          if (err) return console.log('file not exist in directory upload')
+        })
         res.status(200).json({
           status: 200,
           data: req.params.id
