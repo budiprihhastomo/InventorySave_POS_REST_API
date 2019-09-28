@@ -1,12 +1,15 @@
 /* eslint-disable camelcase */
 // Import model
 const categoriesModel = require('../models/categories')
+const redis = require('redis')
+const client = redis.createClient()
 
 module.exports = {
   // Get all data from database
   fetchAllData: async (req, res) => {
     const resultQuery = await categoriesModel.fetchAllData()
     if (resultQuery.length > 0) {
+      client.setex('categories', 3600, JSON.stringify(resultQuery))
       res.status(200).json({
         status: 200,
         message: 'success fetch data from database',

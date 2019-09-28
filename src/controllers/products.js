@@ -5,6 +5,8 @@ const path = require('path')
 const uuidV1 = require('uuid/v1')
 const fs = require('fs')
 const query = require('../config/query')
+const redis = require('redis')
+const client = redis.createClient()
 
 module.exports = {
   // Get all data from database
@@ -42,7 +44,6 @@ module.exports = {
       const data = { product_name, product_description, product_category, product_price, product_qty, product_image: upload.name, created_at: new Date() }
 
       const isExist = await isExistData({ product_name })
-      console.log(isExist)
       if (isExist.length > 0) return res.status(400).json({ status: 400, message: 'data already exist in database' })
 
       const resultQuery = await productsModel.insertData(data)
@@ -129,6 +130,7 @@ module.exports = {
 
     const resultQuery = await productsModel.filterProducts(req.query.s, req.query.field, req.query.sort, data)
     if (resultQuery.length > 0) {
+      client.setex('product', 3600, JSON.stringify(resultQuery))
       const countPage = Math.ceil(resultQuery.length / limit)
       const results = {
         totalPage: countPage,
