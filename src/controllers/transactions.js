@@ -40,10 +40,8 @@ module.exports = {
         // eslint-disable-next-line camelcase
         orderList.push([uuidv1(), unique_transaction_id, item[0], item[1], item[2]])
       })
-      console.log(orderList)
       const resultQueryDetail = await transactionModel.paymentOrderDetail(orderList)
       if (resultQueryDetail.affectedRows > 0) {
-        console.log(orderList)
         res.status(201).json({
           status: 201,
           error: false,
