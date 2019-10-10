@@ -13,13 +13,11 @@ module.exports = {
   // Get all data from database
   fetchAllData: async (req, res) => {
     const resultQuery = await productsModel.fetchAllData()
-    if (resultQuery.length > 0) {
-      res.status(200).json({
-        status: 200,
-        message: 'success fetch data from database',
-        data: resultQuery
-      })
-    }
+    return res.status(200).json({
+      status: 200,
+      message: 'success fetch data from database',
+      data: resultQuery
+    })
   },
   // Get detail data from database
   fetchSelectedData: async (req, res) => {

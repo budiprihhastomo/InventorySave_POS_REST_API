@@ -43,6 +43,13 @@ module.exports = {
       console.log(err)
     }
   },
+  insertDataBatch: async (TABLE, DATA) => {
+    try {
+      return await db.query(`INSERT INTO ${TABLE} VALUES ?`, [DATA])
+    } catch (err) {
+      console.log(err)
+    }
+  },
   updateData: async (TABLE, DATA, FILTER) => {
     try {
       return await db.query(`UPDATE ${TABLE} SET ? WHERE ?`, [DATA, FILTER])

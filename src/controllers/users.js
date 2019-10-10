@@ -8,12 +8,12 @@ const uuidv1 = require('uuid/v1')
 
 module.exports = {
   registerUser: async (req, res) => {
-    const { user_name, user_password, user_cpassword } = req.body
+    const { user_name, user_nick, user_password, user_cpassword } = req.body
     // Hashing Password
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(user_password, salt)
 
-    const data = { user_id: uuidv1(), user_name, user_password, user_cpassword, created_at: new Date() }
+    const data = { user_id: uuidv1(), user_name, user_nick, user_password, user_cpassword, created_at: new Date() }
 
     const { error } = validation.registerValidation(data)
     if (error) {

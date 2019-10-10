@@ -11,6 +11,7 @@ module.exports = {
   registerValidation: (DATA) => {
     const scheme = Joi.object({
       user_id: Joi.string().max(36).required(),
+      user_nick: Joi.string().max(50).required(),
       user_name: Joi.string().min(6).required(),
       user_password: Joi.string().min(6).required(),
       user_cpassword: Joi.string().required().valid(Joi.ref('user_password')),
