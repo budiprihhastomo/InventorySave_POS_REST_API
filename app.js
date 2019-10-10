@@ -16,6 +16,8 @@ const app = express()
 // Set Port
 const port = process.env.PORT_SERVER || 3000
 
+// Allowed public image access
+app.use(express.static('./public'))
 // Use Middleware : body-parser
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))

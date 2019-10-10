@@ -4,9 +4,10 @@ const productsModel = require('../models/products')
 const path = require('path')
 const uuidV1 = require('uuid/v1')
 const fs = require('fs')
-const query = require('../config/query')
+const query = require('../configs/query')
 const redis = require('redis')
 const client = redis.createClient()
+const uuidv1 = require('uuid/v1')
 
 module.exports = {
   // Get all data from database
@@ -41,7 +42,7 @@ module.exports = {
     const upload = uploadImage(req, res)
     if (upload.error === false) {
       const { product_name, product_description, product_category, product_price, product_qty } = req.body
-      const data = { product_name, product_description, product_category, product_price, product_qty, product_image: upload.name, created_at: new Date() }
+      const data = { product_id: uuidv1(), product_name, product_description, product_category, product_price, product_qty, product_image: upload.name, created_at: new Date() }
 
       const isExist = await isExistData({ product_name })
       if (isExist.length > 0) return res.status(400).json({ status: 400, message: 'data already exist in database' })
@@ -124,16 +125,15 @@ module.exports = {
   filterProducts: async (req, res) => {
     // Pagination config
     const page = parseInt(req.query.page, 10) || 1
-    const limit = parseInt(req.query.limit, 10) || 5
+    const limit = parseInt(req.query.limit, 10) || 8
     const offset = (page - 1) * limit
     const data = { offset: offset, limit: limit }
-
+    const getAllData = await productsModel.fetchAllData()
     const resultQuery = await productsModel.filterProducts(req.query.s, req.query.field, req.query.sort, data)
     if (resultQuery.length > 0) {
-      client.setex('product', 3600, JSON.stringify(resultQuery))
-      const countPage = Math.ceil(resultQuery.length / limit)
+      client.setex('prdct', 3600, JSON.stringify(resultQuery))
       const results = {
-        totalPage: countPage,
+        totalData: (!req.query.s) ? getAllData.length : resultQuery.length,
         offsetData: offset,
         limitData: limit,
         page: page,
@@ -202,7 +202,7 @@ const uploadImage = (req, res) => {
       if (mimeType.split('/').shift() === 'image') {
         const productImage = req.files.product_image
         const pattern = uuidV1() + '.' + productImage.name.split('.').pop()
-        const locationUpload = path.join(__dirname, '../../../public/' + pattern)
+        const locationUpload = path.join(__dirname, '../../public/' + pattern)
         productImage.mv(locationUpload)
         return {
           error: false,

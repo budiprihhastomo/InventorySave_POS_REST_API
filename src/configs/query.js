@@ -1,4 +1,4 @@
-const db = require('../config/db')
+const db = require('../configs/db')
 
 module.exports = {
   customQuery: async (QUERY, DATA) => {

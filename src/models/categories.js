@@ -1,5 +1,5 @@
 // Import DB
-const QUERY = require('../config/query')
+const QUERY = require('../configs/query')
 const TABLE = 'Categories'
 
 module.exports = {

@@ -2,17 +2,18 @@
 const usersModel = require('../models/users')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const validation = require('../config/validations')
-const query = require('../config/query')
+const validation = require('../configs/validations')
+const query = require('../configs/query')
+const uuidv1 = require('uuid/v1')
 
 module.exports = {
   registerUser: async (req, res) => {
-    const { user_name, user_password, user_cpassword, user_role } = req.body
+    const { user_name, user_password, user_cpassword } = req.body
     // Hashing Password
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(user_password, salt)
 
-    const data = { user_name, user_password, user_cpassword, user_role, created_at: new Date() }
+    const data = { user_id: uuidv1(), user_name, user_password, user_cpassword, created_at: new Date() }
 
     const { error } = validation.registerValidation(data)
     if (error) {
@@ -30,9 +31,11 @@ module.exports = {
 
     const resultsQuery = await usersModel.registerUser(data)
     if (resultsQuery.affectedRows > 0) {
+      delete data.user_password
       return res.status(201).json({
         status: 201,
-        message: 'success add new user',
+        error: false,
+        message: 'Successfully added data into database!',
         data: data
       })
     }
@@ -52,26 +55,33 @@ module.exports = {
     const resultsQuery = await usersModel.loginUser({ user_name })
     if (resultsQuery.length > 0) {
       const validPassword = await bcrypt.compare(req.body.user_password, resultsQuery[0].user_password)
-      console.log(validPassword)
       if (!validPassword) {
-        return res.status(400).json({
-          status: 400,
+        return res.status(401).json({
+          status: 401,
+          error: true,
           message: 'password is incorrected'
         })
       }
     } else {
-      return res.status(400).json({
-        status: 400,
+      return res.status(401).json({
+        status: 401,
+        error: true,
         message: 'username or password is incorrected'
       })
     }
 
     // Create & Assign JWT
-    const token = jwt.sign({ _id: resultsQuery[0].user_name }, process.env.SECRET_KEY)
+    const dataUser = {
+      user_id: resultsQuery[0].user_id,
+      user_name: resultsQuery[0].user_name,
+      user_role: resultsQuery[0].user_role
+    }
+    const token = jwt.sign(dataUser, process.env.SECRET_KEY)
     res.status(200).header('auth-token', token).json({
       status: 200,
       message: 'login success',
-      access_token: token
+      access_token: token,
+      data: dataUser
     })
   }
 }

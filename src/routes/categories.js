@@ -6,6 +6,9 @@ const client = redis.createClient()
 // Import Controller
 const categoriesController = require('../controllers/categories')
 
+// Import Middleware
+const authMid = require('../middlewares/verifyToken')
+
 // Caching with redis
 const cacheData = (req, res, next) => {
   client.get('categories', (err, data) => {
@@ -25,8 +28,8 @@ const cacheData = (req, res, next) => {
 route
   .get('/', cacheData, categoriesController.fetchAllData)
   .get('/:id', categoriesController.fetchSelectedData)
-  .post('/', categoriesController.insertData)
-  .patch('/:id', categoriesController.updateData)
-  .delete('/:id', categoriesController.deleteData)
+  .post('/', authMid.isAuth, categoriesController.insertData)
+  .patch('/:id', authMid.isAuth, categoriesController.updateData)
+  .delete('/:id', authMid.isAuth, categoriesController.deleteData)
 
 module.exports = route

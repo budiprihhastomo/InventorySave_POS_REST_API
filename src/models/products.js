@@ -1,5 +1,5 @@
 // Import DB
-const QUERY = require('../config/query')
+const QUERY = require('../configs/query')
 const TABLE = 'Products'
 
 const CFIELD = 'product_id, product_name, product_description, product_image, X2.category_name, product_price, product_qty, X1.created_at, X1.updated_at'

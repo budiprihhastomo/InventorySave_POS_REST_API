@@ -7,11 +7,11 @@ const client = redis.createClient()
 const productsController = require('../controllers/products')
 
 // Import Middleware
-const authMid = require('./verifyToken')
+const authMid = require('../middlewares/verifyToken')
 
 // Caching with redis
 const cacheData = (req, res, next) => {
-  client.get('products', (err, data) => {
+  client.get('prdct', (err, data) => {
     if (err) throw err
     if (data != null) {
       return res.status(200).json({
@@ -26,7 +26,7 @@ const cacheData = (req, res, next) => {
 }
 
 route
-  .get('/', cacheData, productsController.filterProducts)
+  .get('/', productsController.filterProducts)
   .get('/:id', productsController.fetchSelectedData)
   .post('/', authMid.isAuth, productsController.insertData)
   .patch('/:id', authMid.isAuth, productsController.updateData)

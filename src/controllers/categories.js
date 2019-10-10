@@ -3,6 +3,7 @@
 const categoriesModel = require('../models/categories')
 const redis = require('redis')
 const client = redis.createClient()
+const uuidv1 = require('uuid/v1')
 
 module.exports = {
   // Get all data from database
@@ -14,6 +15,11 @@ module.exports = {
         status: 200,
         message: 'success fetch data from database',
         data: resultQuery
+      })
+    } else {
+      res.status(404).json({
+        status: 404,
+        message: 'data not available in database'
       })
     }
   },
@@ -36,7 +42,7 @@ module.exports = {
   // Insert data into database
   insertData: async (req, res) => {
     const { category_name } = req.body
-    const data = { category_name, created_at: new Date() }
+    const data = { category_id: uuidv1(), category_name, created_at: new Date() }
 
     const resultQuery = await categoriesModel.insertData(data)
     if (resultQuery.affectedRows > 0) {
