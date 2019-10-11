@@ -23,7 +23,7 @@ module.exports = {
     const resultQuery = await reportsModal.fetchCountCard(FIELD, TABLE)
     res.status(200).json({
       status: 200,
-      data: resultQuery
+      resultQuery
     })
   }
 }

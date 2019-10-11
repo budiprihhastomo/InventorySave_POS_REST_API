@@ -9,7 +9,7 @@ module.exports = {
   // Get all data from database
   fetchAllData: async () => {
     try {
-      return await QUERY.selectCustom(CTABLE, CFIELD)
+      return await QUERY.selectCustom(CFIELD, CTABLE)
     } catch (err) {
       console.log(err)
     }
