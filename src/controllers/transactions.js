@@ -35,6 +35,7 @@ module.exports = {
     const resultQueryHeader = await transactionModel.paymentOrderHeader(data)
     if (resultQueryHeader.affectedRows > 0) {
       // REVIEW : Testing Code Transaksi (BETA VERSION)
+      // eslint-disable-next-line prefer-const
       let orderList = []
       order_detail.map(item => {
         // eslint-disable-next-line camelcase

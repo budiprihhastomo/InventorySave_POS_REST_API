@@ -22,7 +22,7 @@ module.exports = {
       console.log(err)
     }
   },
-  selectCustom: async (TABLE, FIELD) => {
+  selectCustom: async (FIELD, TABLE) => {
     try {
       return await db.query(`SELECT ${FIELD} ${TABLE}`)
     } catch (err) {
