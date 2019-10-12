@@ -6,5 +6,6 @@ const reportController = require('../controllers/reports')
 
 route
   .get('/', reportController.fetchCountCard)
+  .get('/recent', reportController.fetchRecentOrder)
 
 module.exports = route

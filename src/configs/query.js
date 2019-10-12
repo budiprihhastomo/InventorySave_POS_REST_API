@@ -63,5 +63,12 @@ module.exports = {
     } catch (err) {
       console.log(err)
     }
+  },
+  selectCustomQuery: async (FILTER) => {
+    try {
+      return await db.query(`${FILTER}`)
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
